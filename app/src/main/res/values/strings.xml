@@ -4,5 +4,7 @@
     <string name="app_name">epitech-2048</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="restart">Restart</string>
+    <string name="quit">Quit</string>
 
 </resources>

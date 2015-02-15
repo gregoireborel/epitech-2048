@@ -84,11 +84,17 @@ public class HomeActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.restart)
+        {
+            nbArray = new int[4][4];
+            // HERE RESET UI
             return true;
         }
-
+        else if (id == R.id.quit)
+        {
+            finish();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
