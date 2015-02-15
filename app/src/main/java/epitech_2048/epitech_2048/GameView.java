@@ -89,6 +89,7 @@ public class GameView extends View {
         float offsetX = col * (getNumberSizeX() + getNumberPadding());
 
         canvas.drawRect(offsetX, offsetY, getNumberSizeX(), getNumberSizeY(), number.paint);
-        canvas.drawText(String.valueOf(number.value), offsetX, offsetY, valuesPaint);
+        if (number.value > 0)
+          canvas.drawText(String.valueOf(number.value), offsetX, offsetY, valuesPaint);
     }
 }
