@@ -54,6 +54,13 @@ public class GameView extends View {
         valuesPaint.setStyle(Paint.Style.FILL_AND_STROKE);
     }
 
+    public void setNumberArray(int[][] array) {
+        for (int x = 0 ; x < 4 ; x++) {
+          for (int y = 0 ; y < 4 ; y++)
+            numbers[x][y].setValue(array[x][y]);
+        }
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         renderNumbers(canvas);
