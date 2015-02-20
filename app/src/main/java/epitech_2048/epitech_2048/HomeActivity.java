@@ -92,6 +92,8 @@ public class HomeActivity extends ActionBarActivity
         if (id == R.id.restart)
         {
             nbArray = new int[4][4];
+            addNewNumber();
+            addNewNumber();
             // HERE RESET UI
             return true;
         }
