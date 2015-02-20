@@ -27,6 +27,11 @@ public class HomeActivity extends ActionBarActivity
         messageView = (TextView) findViewById(R.id.text_msg);
         messageView.setText("None.");
 
+        /* Add the first two numbers */
+        addNewNumber();
+        addNewNumber();
+
+        /* Set gesture recognizers */
         gesture = (GestureOverlayView) findViewById(R.id.gestureHandler);
         gesture.setOnTouchListener(new OnSwipeTouchListener(this) {
 
@@ -112,7 +117,7 @@ public class HomeActivity extends ActionBarActivity
 
         while (nbArray[(x = randomGenerator.nextInt(4))][(y = randomGenerator.nextInt(4))] != 0) {}
 
-        nbArray[x][y] = 2;
+        nbArray[x][y] = randomGenerator.nextInt(4) == 0 ? 4 : 2;
     }
 
     public void moveAllNumbersToRight() {
