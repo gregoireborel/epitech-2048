@@ -32,6 +32,7 @@ public class HomeActivity extends ActionBarActivity
         /* Add the first two numbers */
         addNewNumber();
         addNewNumber();
+        gameView.setNumberArray(nbArray);
 
         /* Set gesture recognizers */
         gesture = (GestureOverlayView) findViewById(R.id.gestureHandler);
@@ -113,7 +114,6 @@ public class HomeActivity extends ActionBarActivity
             Log.d("nbArray", String.format("%d %d %d %d", nbArray[x][0], nbArray[x][1], nbArray[x][2],nbArray[x][3]));
         }
         Log.d("nbArray", "/*** Finished printing ***/");
-
         gameView.setNumberArray(nbArray);
     }
 

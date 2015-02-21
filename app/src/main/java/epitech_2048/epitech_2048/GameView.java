@@ -8,7 +8,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class GameView extends View {
-    private Paint valuesPaint = new Paint();
+    private Paint             valuesPaint = new Paint();
+    private Paint.FontMetrics fontMetrics;
 
     private static class NumberSquare {
         public int   value = 0;
@@ -58,9 +59,9 @@ public class GameView extends View {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
-        valuesPaint.setColor(Color.WHITE);
-        valuesPaint.setStrokeWidth(1);
-        valuesPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        valuesPaint.setColor(Color.BLACK);
+        valuesPaint.setTextSize(100);
+        fontMetrics = valuesPaint.getFontMetrics();
         for (int x = 0 ; x < rowCount ; x++) {
             for (int y = 0 ; y < colCount ; y++)
                 numbers[x][y] = new NumberSquare();
@@ -83,7 +84,6 @@ public class GameView extends View {
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        System.out.println("Canvas size changed");
         canvasWidth  = w;
         canvasHeight = h;
         numberSizeX  = getNumberSizeX();
@@ -119,11 +119,8 @@ public class GameView extends View {
         float        offsetY = row * (numberSizeY + getNumberPadding());
         float        offsetX = col * (numberSizeX + getNumberPadding());
 
-        System.out.println("Render ["+ col +"][" + row + "] at (" + offsetX + "," + offsetY + ")");
         canvas.drawRect(offsetX, offsetY, offsetX + numberSizeX, offsetY + numberSizeY, number.paint);
-        //if (number.value > 0) {
-            System.out.println("Rendering text: " + String.valueOf(number.value));
-            canvas.drawText(String.valueOf(number.value), offsetX, offsetY, valuesPaint);
-        //}
+        if (number.value > 0)
+            canvas.drawText(String.valueOf(number.value), offsetX, offsetY - fontMetrics.top, valuesPaint);
     }
 }
