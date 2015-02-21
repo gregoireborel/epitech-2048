@@ -8,8 +8,19 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class GameView extends View {
-    private Paint             valuesPaint = new Paint();
-    private Paint.FontMetrics fontMetrics;
+    public static class RGB {
+        public int red, green, blue;
+
+        public RGB(int red, int green, int blue) {
+            this.red   = red;
+            this.green = green;
+            this.blue  = blue;
+        }
+
+        void setOnPaint(Paint paint) {
+            paint.setARGB(255, red, green, blue);
+        }
+    }
 
     private static class NumberSquare {
         public int   value = 0;
@@ -31,17 +42,30 @@ public class GameView extends View {
         }
 
         public void updatePaint() {
-            paint.setColor(Color.BLUE);
+            int          power = 0;
+            double       value = 0;
+            GameView.RGB color = GameView.squareColors[0];
+
+            while (value < 2048) {
+                if (value == this.value)
+                    color = GameView.squareColors[power];
+                power += 1;
+                value = Math.pow(2, power);
+            }
+            color.setOnPaint(paint);
         }
     }
 
-    private final int rowCount = 4;
-    private final int colCount = 4;
-    private NumberSquare[][] numbers = new NumberSquare[rowCount][colCount];
-    private int   canvasWidth  = 100;
-    private int   canvasHeight = 100;
-    private float numberSizeX  = 10;
-    private float numberSizeY  = 10;
+    private final int         rowCount     = 4;
+    private final int         colCount     = 4;
+    private NumberSquare[][]  numbers      = new NumberSquare[rowCount][colCount];
+    private int               canvasWidth  = 100;
+    private int               canvasHeight = 100;
+    private float             numberSizeX  = 10;
+    private float             numberSizeY  = 10;
+    public static RGB[]       squareColors = new RGB[12];
+    private Paint             valuesPaint  = new Paint();
+    private Paint.FontMetrics fontMetrics;
 
     public GameView(Context context) {
         super(context);
@@ -62,10 +86,26 @@ public class GameView extends View {
         valuesPaint.setColor(Color.BLACK);
         valuesPaint.setTextSize(100);
         fontMetrics = valuesPaint.getFontMetrics();
+        initializeColors();
         for (int x = 0 ; x < rowCount ; x++) {
             for (int y = 0 ; y < colCount ; y++)
                 numbers[x][y] = new NumberSquare();
         }
+    }
+
+    private void initializeColors() {
+        squareColors[0]  = new RGB(0,   0,   0);
+        squareColors[1]  = new RGB(213, 216, 218);
+        squareColors[2]  = new RGB(192, 194, 196);
+        squareColors[3]  = new RGB(173, 175, 176);
+        squareColors[4]  = new RGB(156, 158, 158);
+        squareColors[5]  = new RGB(140, 142, 142);
+        squareColors[6]  = new RGB(126, 128, 128);
+        squareColors[7]  = new RGB(113, 115, 115);
+        squareColors[8]  = new RGB(102, 104, 104);
+        squareColors[9]  = new RGB(92,  94,  94);
+        squareColors[10] = new RGB(83,  85,  85);
+        squareColors[11] = new RGB(75,  76,  76);
     }
 
     public void setNumberArray(int[][] array) {
