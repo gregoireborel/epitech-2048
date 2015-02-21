@@ -13,9 +13,9 @@ import java.util.Random;
 
 public class HomeActivity extends ActionBarActivity
 {
-
     private TextView            messageView;
     private GestureOverlayView  gesture;
+    private GameView            gameView;
     private int[][]             nbArray = new int[4][4];
 
     @Override
@@ -26,6 +26,8 @@ public class HomeActivity extends ActionBarActivity
 
         messageView = (TextView) findViewById(R.id.text_msg);
         messageView.setText("None.");
+
+        gameView = (GameView) findViewById(R.id.view);
 
         /* Add the first two numbers */
         addNewNumber();
@@ -111,6 +113,8 @@ public class HomeActivity extends ActionBarActivity
             Log.d("nbArray", String.format("%d %d %d %d", nbArray[x][0], nbArray[x][1], nbArray[x][2],nbArray[x][3]));
         }
         Log.d("nbArray", "/*** Finished printing ***/");
+
+        gameView.setNumberArray(nbArray);
     }
 
     public void addNewNumber() {

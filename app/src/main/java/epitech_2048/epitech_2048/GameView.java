@@ -12,10 +12,13 @@ public class GameView extends View {
 
     private static class NumberSquare {
         public int   value = 0;
-        public Paint paint;
+        public Paint paint = new Paint();
 
         public NumberSquare() {
-            paint = new Paint();
+            initialize();
+        }
+
+        public void initialize() {
             paint.setStyle(Paint.Style.FILL_AND_STROKE);
             paint.setStrokeWidth(2);
             updatePaint();
@@ -31,7 +34,13 @@ public class GameView extends View {
         }
     }
 
-    private NumberSquare[][] numbers = new NumberSquare[4][4];
+    private final int rowCount = 4;
+    private final int colCount = 4;
+    private NumberSquare[][] numbers = new NumberSquare[rowCount][colCount];
+    private int   canvasWidth  = 100;
+    private int   canvasHeight = 100;
+    private float numberSizeX  = 10;
+    private float numberSizeY  = 10;
 
     public GameView(Context context) {
         super(context);
@@ -49,16 +58,21 @@ public class GameView extends View {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
-        valuesPaint.setColor(Color.BLUE);
+        valuesPaint.setColor(Color.WHITE);
         valuesPaint.setStrokeWidth(1);
         valuesPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        for (int x = 0 ; x < rowCount ; x++) {
+            for (int y = 0 ; y < colCount ; y++)
+                numbers[x][y] = new NumberSquare();
+        }
     }
 
     public void setNumberArray(int[][] array) {
-        for (int x = 0 ; x < 4 ; x++) {
-          for (int y = 0 ; y < 4 ; y++)
+        for (int x = 0 ; x < rowCount ; x++) {
+          for (int y = 0 ; y < colCount ; y++)
             numbers[x][y].setValue(array[x][y]);
         }
+        invalidate();
     }
 
     @Override
@@ -67,36 +81,49 @@ public class GameView extends View {
         super.onDraw(canvas);
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        System.out.println("Canvas size changed");
+        canvasWidth  = w;
+        canvasHeight = h;
+        numberSizeX  = getNumberSizeX();
+        numberSizeY  = getNumberSizeY();
+        if (numberSizeY > numberSizeX)
+          numberSizeY = numberSizeX;
+        if (numberSizeX > numberSizeY)
+          numberSizeX = numberSizeY;
+    }
+
     private float getNumberSizeY() {
-        return 10;
+        return (canvasHeight / rowCount) - (getNumberPadding() / rowCount);
     }
 
     private float getNumberSizeX() {
-        return 10;
+        return (canvasWidth / colCount) - (getNumberPadding() / colCount);
     }
 
     private float getNumberPadding() {
-        return 1;
+        return 10;
     }
 
     private void renderNumbers(Canvas canvas) {
-        int currentRow = 0;
-
-        for (NumberSquare[] numberRow : numbers) {
-            int   currentCol = 0;
-
-            for (NumberSquare number : numberRow)
-                renderNumber(canvas, number, currentRow, currentCol);
-            currentRow++;
+        for (int x = 0 ; x < rowCount ; x++) {
+            for (int y = 0 ; y < colCount ; y++) {
+                renderNumber(canvas, x, y);
+            }
         }
     }
 
-    private void renderNumber(Canvas canvas, NumberSquare number, int row, int col) {
-        float offsetY = row * (getNumberSizeY() + getNumberPadding());
-        float offsetX = col * (getNumberSizeX() + getNumberPadding());
+    private void renderNumber(Canvas canvas, int row, int col) {
+        NumberSquare number  = numbers[row][col];
+        float        offsetY = row * (numberSizeY + getNumberPadding());
+        float        offsetX = col * (numberSizeX + getNumberPadding());
 
-        canvas.drawRect(offsetX, offsetY, getNumberSizeX(), getNumberSizeY(), number.paint);
-        if (number.value > 0)
-          canvas.drawText(String.valueOf(number.value), offsetX, offsetY, valuesPaint);
+        System.out.println("Render ["+ col +"][" + row + "] at (" + offsetX + "," + offsetY + ")");
+        canvas.drawRect(offsetX, offsetY, offsetX + numberSizeX, offsetY + numberSizeY, number.paint);
+        //if (number.value > 0) {
+            System.out.println("Rendering text: " + String.valueOf(number.value));
+            canvas.drawText(String.valueOf(number.value), offsetX, offsetY, valuesPaint);
+        //}
     }
 }
