@@ -97,7 +97,7 @@ public class HomeActivity extends ActionBarActivity
             nbArray = new int[4][4];
             addNewNumber();
             addNewNumber();
-            // HERE RESET UI
+            gameView.setNumberArray(nbArray);
             return true;
         }
         else if (id == R.id.quit)
