@@ -25,4 +25,13 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"></android.gesture.GestureOverlayView>
 
+    <view
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        class="epitech_2048.epitech_2048.GameView"
+        android:id="@+id/view"
+        android:layout_below="@+id/text_msg"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
